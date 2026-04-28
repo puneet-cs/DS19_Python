@@ -64,6 +64,34 @@ def get_ai_response(messages):
     except Exception as e:
         return f"Error getting AI response: {e}"
 
+def speak(text, voice_gender = 'girl'):
+    try:
+        engine = get_tts_engine()
+        if engine is None:
+            return
+        
+        # selecting the voice for the engine
+        voices = engine.getProperty("voices")
+        if voices:
+            if voice_gender == "boy":
+                for voice in voices:
+                    if "male" in voice.name.lower():
+                        engine.setProperty('voice', voice.id)
+                        break
+            else:
+                for voice in voices:
+                    if "female" in voice.name.lower() or "zira" in voice.name.lower():
+                        engine.setProperty('voice', voice.id)
+                        break
+
+        engine.setProperty('rate', 150)
+        engine.setProperty('volume', 0.8)
+        engine.say(text)
+        engine.runAndWait()
+        engine.stop()
+    except Exception as e:
+        st.error(f"TTS Error {e}")
+
 def main():
     st.title("Baby Siri Voice Assistant")
     st.markdown("---")
@@ -107,6 +135,9 @@ def main():
 
                     if tts_enabled:
                         speak(ai_response, voice_gender )
+
+                    st.rerun()
+        
 
 
 
