@@ -138,6 +138,36 @@ def main():
 
                     st.rerun()
         
+        st.markdown("---")
+
+        if st.button("Clear chat", use_container_width=True):
+            st.session_state.messages = []
+            st.session_state.chat_history = [
+            {"role" : "system", "content": "You are a helpful voice assistant. Reply just one line"}
+        ]
+            st.rerun()
+
+    st.subheader("CONVERSATION")
+    if not st.session_state.messages:
+        st.info("Welcome to Baby Siri : Click on voice button to start")
+    for message in st.session_state.messages:
+        if message["role"] == "user":
+            with st.chat_message("user"):
+                st.write(message["content"])    
+        else:
+            with st.chat_message("assistant"):
+                st.write(message["content"])
+
+    st.markdown("---")
+    st.markdown(
+        """
+            <div style = 'text-align: center; color: #666;'>
+                <p> CopyRight @ Puneet Kansal
+            </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 
 
